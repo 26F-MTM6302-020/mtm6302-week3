@@ -46,6 +46,10 @@ monsterCard.classList.add("is-happy")
 monsterCard.classList.remove("is-happy")
 monsterCard.classList.toggle("party-mode")
 
+const messageText = document.getElementById("monster-message")
+const certificateName = document.querySelector("#certificate-name")
+const energyText = document.getElementById("monster-energy")
+
 // 5. Use an energy number and if / else if / else to choose a mood.
 let energy = 20
 
@@ -59,8 +63,80 @@ function getMood(energy) {
     }
 }
 
-const mood = getMood(energy)
-console.log(mood)
+function updateMonster() {
+    const mood = getMood(energy)
+    moodText.textContent = mood
+    energyText.textContent = energy
+
+    monsterCard.classList.remove("is-sleepy", "is-hungry", "is-happy")
+
+    if (energy < 30) {
+        monsterCard.classList.add("is-sleepy")
+        monsterImage.setAttribute("src", "assets/sleepy.svg")
+        monsterImage.setAttribute("alt", "A sleepy greeen monster with closed eyes")
+        messageText.textContent = "Currently buffering. Please send snacks."
+    } else if (energy < 70) {
+        monsterCard.classList.add("is-hunngry")
+        monsterImage.setAttribute("src", "assets/hungry.svg")
+        monsterImage.setAttribute("alt", "A hugry greeen monster with wide eyes and open mouth")
+        messageText.textContent = "I smell a cookie in another browser tab."
+    } else {
+        monsterCard.classList.add("is-happy")
+        monsterImage.setAttribute("src", "assets/happy.svg")
+        monsterImage.setAttribute("alt", "A happy green monster with a big smile")
+        messageText.textContent = "Enough energy to create some chaos on internet."
+    }
+}
+function feedMonster(amount) {
+    //  add amount to the energy
+    // energy = energy + amount
+    energy += amount
+    // check if enerygy is more than 100 then set to 100 if it is less than 0 then set to 0
+    if (energy > 100) {
+        energy = 100
+        console.log("cannot go above 100")
+    } else if (energy < 0) {
+        energy = 0
+        console.log("cannot go below 0")
+    }
+    // call the updateMonster funciton
+    updateMonster()
+}
+function playMonster(amount) {
+    //  remove amount from the energy
+    energy -= amount
+    // check if enerygy is more than 100 then set to 100 if it is less than 0 then set to 0
+    if (energy > 100) {
+        energy = 100
+        console.log("cannot go above 100")
+    } else if (energy < 0) {
+        energy = 0
+        console.log("cannot go below 0")
+    }
+    // call the updateMonster funciton
+    updateMonster()
+}
+
+function renameMonster(name) {
+    document.title += " - " + name
+    monsterName.textContent = name
+    certificateName.textContent = name
+}
+
+function toggleParty() {
+    monsterCard.classList.toggle("party-mode")
+}
+
+function resetMonster() {
+    energy = 20
+    renameMonster("Mochi")
+    monsterCard.classList.remove("party-mode")
+    updateMonster()
+}
+
+resetMonster()
+
+
 
 // 6. Put display updates in updateMonster(). Add feedMonster(amount).
 
